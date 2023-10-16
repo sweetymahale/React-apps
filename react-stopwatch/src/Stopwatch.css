@@ -3,6 +3,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+
 }
 
 .Stopwatch-display {
@@ -14,17 +15,20 @@
 }
 
 .Stopwatch-number {
-    color: #FFFFFF;
+    color: #0f0f0f;
+
 }
 
 .Stopwatch-button-group {
     margin: 0 auto;
     padding: 0 5px;
+    color: #080707;
 }
 
 .Stopwatch-button {
     border-radius: 0;
     box-shadow: none;
+    color: #080808;
 }
 
 @media (max-width: 575px) {

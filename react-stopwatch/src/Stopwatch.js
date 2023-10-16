@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Form, FormGroup, FormLabel, Button, ButtonGroup } from 'react-bootstrap';
 import './Stopwatch.css';
 
-const Separator = () => {
-    return <FormLabel className='Stopwatch-number'>:</FormLabel>
-}
 
 export default function Stopwatch() {
     const [tick, setTick] = useState(null);
     const [totalSeconds, setTotalSeconds] = useState(0);
-
+    const [started, setStaterd] = useState(false);
+    const Separator = () => {
+        return <FormLabel className='Stopwatch-number'>:</FormLabel>
+    }
     function incrementCount() {
         setTotalSeconds(totalSeconds + 1)
     }
@@ -28,26 +28,31 @@ export default function Stopwatch() {
         setTick(
             setInterval(() => incrementCount(), 1000)
         );
+        setStaterd(true);
     }
     const stopCounter = () => {
         clearInterval(tick);
         setTick(null);
+        setStaterd(false);
     }
 
     const resetCounter = () => {
         clearInterval(tick);
         setTick(null);
         setTotalSeconds(0);
+        setStaterd(false);
     }
     const resumeCounter = () => {
         clearInterval(tick);
-        setTick(setInterval(() => incrementCount(), 1000))
+        setTick(setInterval(() => incrementCount(), 1000));
+        setStaterd(true);
     }
     const leadingZero = (num) => {
         return num < 10 ? '0' + num : num;
     }
-    let buttons = null;
-    let started = getHours() > 0 || getMinutes() > 0 || getSeconds() > 0;
+
+
+    //setStaterd(getHours > 0 || getMinutes > 0 || getSeconds > 0);
 
     // buttons = () => {
     //     return(
@@ -56,44 +61,9 @@ export default function Stopwatch() {
     // };
     return (
         <>
-            {!tick && !started
-                (< ButtonGroup justified>
-                    <ButtonGroup className='Stopwatch-button-group'>
-                        <Button bsStyle='info' bsSize='large' block
-                            className='Stopwatch-button'
-                            onClick={this.startCounter}>Start</Button>
-                    </ButtonGroup>
-                </ButtonGroup >)
-            }
-            {!tick && started
-                (<ButtonGroup justified>
-                    <ButtonGroup className='Stopwatch-button-group'>
-                        <Button bsStyle='info' bsSize='large' block
-                            className='Stopwatch-button'
-                            onClick={this.resumeCounter}>Resume</Button>
-                    </ButtonGroup>
-                    <ButtonGroup className='Stopwatch-button-group'>
-                        <Button bsSize='large' block
-                            className='Stopwatch-button'
-                            onClick={this.resetCounter}>Reset</Button>
-                    </ButtonGroup>
-                </ButtonGroup>)
-            }
-            <ButtonGroup justified>
-                <ButtonGroup className='Stopwatch-button-group'>
-                    <Button bsStyle='danger' bsSize='large' block
-                        className='Stopwatch-button'
-                        onClick={this.stopCounter}>Stop</Button>
-                </ButtonGroup>
-                <ButtonGroup className='Stopwatch-button-group'>
-                    <Button bsSize='large' block
-                        className='Stopwatch-button'
-                        onClick={this.resetCounter}>Reset</Button>
-                </ButtonGroup>
-            </ButtonGroup>
             <div className='Stopwatch'>
                 <Form className='Stopwatch-display'>
-                    <FormGroup bsSize='large' controlId='formStopwatch'>
+                    <FormGroup controlId='formStopwatch'>
                         <FormLabel className='Stopwatch-number'>{leadingZero(getHours())}</FormLabel>
                         <Separator />
                         <FormLabel className='Stopwatch-number'>{leadingZero(getMinutes())}</FormLabel>
@@ -101,7 +71,44 @@ export default function Stopwatch() {
                         <FormLabel className='Stopwatch-number'>{leadingZero(getSeconds())}</FormLabel>
                     </FormGroup>
                     <FormGroup>
-                        {buttons}
+                        {(!tick && !started) &&
+                            (< ButtonGroup >
+                                <ButtonGroup className='Stopwatch-button-group'>
+                                    <Button
+                                        className='Stopwatch-button'
+                                        onClick={startCounter}>Start</Button>
+                                </ButtonGroup>
+                            </ButtonGroup >)
+                        }
+                        {(!tick && started) &&
+                            (
+                                <ButtonGroup >
+                                    <ButtonGroup className='Stopwatch-button-group'>
+                                        <Button
+                                            className='Stopwatch-button'
+                                            onClick={resumeCounter}>Resume</Button>
+                                    </ButtonGroup>
+                                    <ButtonGroup className='Stopwatch-button-group'>
+                                        <Button
+                                            className='Stopwatch-button'
+                                            onClick={resetCounter}>Reset</Button>
+                                    </ButtonGroup>
+                                </ButtonGroup>)
+                        }
+                        {(tick && started) &&
+                            (<ButtonGroup >
+                                <ButtonGroup className='Stopwatch-button-group'>
+                                    <Button
+                                        className='Stopwatch-button'
+                                        onClick={stopCounter}>Stop</Button>
+                                </ButtonGroup>
+                                <ButtonGroup className='Stopwatch-button-group'>
+                                    <Button
+                                        className='Stopwatch-button'
+                                        onClick={resetCounter}>Reset</Button>
+                                </ButtonGroup>
+                            </ButtonGroup>)
+                        }
                     </FormGroup>
                 </Form>
             </div>
